@@ -5,7 +5,7 @@ Bash helper to install QEMU + OVMF + swtpm and run **Windows** VMs with UEFI and
 ## Run
 
 ```bash
-sudo bash launcher.sh
+sudo launcher.sh
 ```
 
 Needs **root** and **KVM**. Put your Windows `.iso` in `iso/`. Disk images live in `os/ubuntu/volumes/` (created for you). `iso/` and `tpm/` sit at the repo root — create them if missing: `mkdir -p iso tpm`.
