@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source .env
 set -e
 
 if [ "$EUID" -ne 0 ]; then
@@ -8,12 +9,12 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 
-RAM=8
-REPO_PATH=~/Repository/toolbox/QEMU
+RAM=${RAM:-8}
+REPO_PATH=${REPO_PATH:-~/Repository/toolbox/QEMU}
 
-if [ ! -f "$REPO_PATH/launcher.sh" ]; then
+if [ ! -f "$REPO_PATH/ubuntu.sh" ]; then
     echo ""
-    echo "Overwrite the repo path. The script must point to the QEMU Repository Location where the launcher.sh script is located"
+    echo "Overwrite the repo path. The script must point to the QEMU Repository Location where the ubuntu.sh script is located"
     echo "now pointing to -> $REPO_PATH"
     echo ""
     read -p "Press Enter to exit"
@@ -23,14 +24,6 @@ fi
 
 
 cd $REPO_PATH
-
-echo "Seleziona un'opzione:"
-echo "1> Install / Update QEMU"
-echo "2> Create a virtual disk image"
-echo "3> Create and setup a WINDOWS virtual machine  ->  MUST create a virtual disk image first"
-echo "4> Boot a WINDOWS virtual machine already created"
-echo "5> Extend / Resize a virtual disk image"
-
 
 echo ""
 echo "Insert number"
@@ -83,7 +76,7 @@ case $user_input in
     3)
         echo "Creating and starting a WINDOWS virtual machine"
         echo "The virtual machine will have $RAM GB of RAM"
-        echo "If you want to change the value edit the script launcher.sh"
+        echo "If you want to change the value edit the script ubuntu.sh"
         echo ""
         echo "Here is the link to the Windows ISO file:"
         echo "https://www.microsoft.com/en-us/software-download/windows11"
@@ -156,7 +149,7 @@ case $user_input in
         echo "Booting a WINDOWS virtual machine already created..."
         echo ""
         echo "The virtual machine will have $RAM GB of RAM"
-        echo "If you want to change the value edit the script launcher.sh"
+        echo "If you want to change the value edit the script ubuntu.sh"
         echo ""
         echo "If it's the first time you boot on windows, and you don't want to use a microsoft account,"
         echo "you can use the following command to skip the login screen (shift + F10 to open the terminal)"
