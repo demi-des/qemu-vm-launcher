@@ -1,0 +1,15 @@
+# VM disks (raw images)
+os/ubuntu/volumes/
+
+# TPM state, swtpm socket, copied OVMF vars
+tpm/
+
+# Windows / Linux installer images (large binaries)
+images/*.iso
+images/**/*.iso
+
+# Editor / OS noise
+*~
+*.swp
+.DS_Store
+Thumbs.db
