@@ -158,7 +158,7 @@ while true; do
         echo "Now the virtual machine will be started."
         echo "If you just needed the TPM emulator, quit the script"
         echo ""
-        read -p "Press Enter to start the virtual machine" 
+        read -p "Otherwise, press Enter to continue and start the virtual machine" 
         echo ""     
 
         _qemu \
