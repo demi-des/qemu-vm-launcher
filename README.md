@@ -1,0 +1,1 @@
+Ambiente di virtualizzazione per Ubuntu
