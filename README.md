@@ -1,14 +1,13 @@
 # QEMU VM Launcher
 
-## DISCLAIMER: THIS SCRIPT WAS FULL REFACTORED WITH AI
+Small **personal** helper for spinning up a Windows VM in QEMU when you need it—nothing more. No roadmap, no “product” support, no guarantees: use it, break it, fork it, ignore it.
 
-
-Bash helper to install QEMU + OVMF + swtpm and run **Windows** VMs with UEFI and a software TPM.
+Bash scripts to install QEMU + OVMF + swtpm (on Ubuntu-like distros) and boot a VM with UEFI + software TPM. Parts of the repo were refactored with AI assistance.
 
 ## Run
 
 ```bash
-sudo launcher.sh
+sudo bash launcher.sh
 ```
 
 Needs **root** and **KVM**. Put your Windows `.iso` in `images/`. Disk images live in `os/ubuntu/volumes/` (created for you). `images/` and `tpm/` sit at the repo root — create them if missing: `mkdir -p images tpm`.
