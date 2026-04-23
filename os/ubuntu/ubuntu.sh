@@ -3,34 +3,31 @@
 source .env
 set -e
 
-if [ "$EUID" -ne 0 ]; then
-    echo "You must be root to execute this script"
-    exit 1
-fi
-
 
 RAM=${RAM:-8}
 REPO_PATH=${REPO_PATH:-~/Repository/toolbox/QEMU}
 
-if [ ! -f "$REPO_PATH/ubuntu.sh" ]; then
-    echo ""
-    echo "Overwrite the repo path. The script must point to the QEMU Repository Location where the ubuntu.sh script is located"
-    echo "now pointing to -> $REPO_PATH"
-    echo ""
-    read -p "Press Enter to exit"
-    echo ""
-    exit 1
-fi
-
-
 cd $REPO_PATH
 
-echo ""
-echo "Insert number"
-read -p ">" user_input
-echo ""   
-echo ""  
-case $user_input in
+while true; do
+    echo ""
+    echo "=== QEMU VM Launcher ==="
+    echo ""
+    echo "  1) Install or update QEMU, swtpm, and OVMF (apt)"
+    echo "  2) Create a new virtual disk image (raw, in ./volumes/)"
+    echo "  3) Create and boot a Windows VM (ISO + disk; first-time setup)"
+    echo "  4) Boot an existing Windows VM"
+    echo "  5) Resize / extend a virtual disk (qemu-img; VM must be off)"
+    echo "  0) Exit"
+    echo ""
+    read -rp "Select an option [0-5]: " user_input
+    echo ""
+
+    case $user_input in
+        0)
+            echo "Goodbye."
+            exit 0
+            ;;
     1)
         echo "Installing / Updating QEMU"
         echo ""
@@ -106,7 +103,7 @@ case $user_input in
         echo ""
 
         echo "Starting TPM emulator"
-        # Termina eventuali processi swtpm precedenti e pulisce il lock
+        # Stop any previous swtpm and remove stale socket/lock
         pkill swtpm 2>/dev/null || true
         rm -f ./tpm/swtpm-sock 2>/dev/null || true
         rm -f ./tpm/lock 2>/dev/null || true
@@ -166,7 +163,7 @@ case $user_input in
         echo ""
 
         echo "Starting TPM emulator..."
-        # Termina eventuali processi swtpm precedenti e pulisce il lock
+        # Stop any previous swtpm and remove stale socket/lock
         pkill swtpm 2>/dev/null || true
         rm -f ./tpm/swtpm-sock 2>/dev/null || true
         rm -f ./tpm/lock 2>/dev/null || true
@@ -244,11 +241,11 @@ case $user_input in
         echo "NOTE: inside Windows you must extend the partition to use the new unallocated space."
         ;;
     *)
-        echo "Invalid option"
-        exit 0
+        echo "Invalid option. Enter a number from 0 to 5."
         ;;
+    esac
 
-esac
-
-echo ""
-echo "end"
+    echo ""
+    read -rp "Press Enter to return to the menu..."
+    echo ""
+done
