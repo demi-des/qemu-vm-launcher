@@ -15,7 +15,7 @@ QEMU_CPU_AFFINITY=${QEMU_CPU_AFFINITY:-2-4}
 OVMF_CODE_FD=${OVMF_CODE_FD:-/usr/share/OVMF/OVMF_CODE_4M.secboot.fd}
 OVMF_VARS_TEMPLATE=${OVMF_VARS_TEMPLATE:-/usr/share/OVMF/OVMF_VARS_4M.ms.fd}
 VOLUMES_DIR=${VOLUMES_DIR:-volumes}
-ISO_DIR=${ISO_DIR:-iso}
+ISO_DIR=${ISO_DIR:-images}
 TPM_DIR=${TPM_DIR:-tpm}
 OVMF_VARS_WIN=${OVMF_VARS_WIN:-OVMF_VARS_win11.fd}
 
@@ -117,6 +117,7 @@ while true; do
         echo ""        
         echo ""
         
+        mkdir -p "$REPO_ROOT/$ISO_DIR"
         echo "ISO list from directory $REPO_ROOT/$ISO_DIR/"
         ls "$REPO_ROOT/$ISO_DIR/"
         echo ""
@@ -135,6 +136,7 @@ while true; do
         echo ""        
         echo ""
 
+        mkdir -p "$REPO_ROOT/$TPM_DIR"
         echo "Copying OVMF vars template to $REPO_ROOT/$TPM_DIR/$OVMF_VARS_WIN"
         cp "$OVMF_VARS_TEMPLATE" "$REPO_ROOT/$TPM_DIR/$OVMF_VARS_WIN"
         echo ""
