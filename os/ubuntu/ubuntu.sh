@@ -168,7 +168,7 @@ while true; do
         echo "  OOBE\\BypassNRO.cmd"
         echo "After reboot, choose \"I don't have internet\" / limited setup and create a local account."
         echo "On some builds you can use instead: start ms-cxh:localonly"
-        echo ""
+        echo "YOU MUST HAVE NO INTERNET CONNECTION TO USE THIS METHOD (unplug the internet cable)"
 
         # CD on SATA port 0 + media=cdrom: OVMF often skips ISO if CD is only on a higher port
         _qemu \
