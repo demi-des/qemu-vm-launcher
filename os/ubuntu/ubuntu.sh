@@ -158,23 +158,33 @@ while true; do
         echo "Now the virtual machine will be started."
         echo "If you just needed the TPM emulator, quit the script"
         echo ""
-        read -p "Otherwise, press Enter to continue and start the virtual machine" 
-        echo ""     
+        echo "Boot order is automatic: first start from ISO, later reboots from disk (no UEFI menu needed)."
+        echo "If you see 'Press any key to boot from CD...' that is Windows — press Space once inside the QEMU window."
+        echo ""
+        read -p "Otherwise, press Enter to continue and start the virtual machine"
+        echo ""
+        echo "Tip — first-time Windows setup without a Microsoft account: at the network/sign-in screen,"
+        echo "press Shift+F10 to open a console, then run:"
+        echo "  OOBE\\BypassNRO.cmd"
+        echo "After reboot, choose \"I don't have internet\" / limited setup and create a local account."
+        echo "On some builds you can use instead: start ms-cxh:localonly"
+        echo ""
 
+        # CD on SATA port 0 + media=cdrom: OVMF often skips ISO if CD is only on a higher port
         _qemu \
             -machine q35,smm=on,accel=kvm \
             -m "${RAM}G" \
             -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE_FD" \
             -drive if=pflash,format=raw,file="$REPO_ROOT/$TPM_DIR/$OVMF_VARS_WIN" \
             -device ich9-ahci,id=ahci \
+            -drive id=cd,if=none,media=cdrom,format=raw,readonly=on,file="$REPO_ROOT/$ISO_DIR/$iso_file_name" \
+            -device ide-cd,bus=ahci.0,drive=cd,bootindex=0 \
             -drive id=disk,if=none,file="$VOLUMES_ROOT/$virtual_volume_name",format=raw \
             -device ide-hd,bus=ahci.1,drive=disk,bootindex=1 \
-            -drive id=cd,if=none,format=raw,readonly=on,file="$REPO_ROOT/$ISO_DIR/$iso_file_name" \
-            -device ide-cd,bus=ahci.2,drive=cd,bootindex=0 \
             -chardev socket,id=chrtpm,path="$REPO_ROOT/$TPM_DIR/swtpm-sock" \
             -tpmdev emulator,id=tpm0,chardev=chrtpm \
             -device tpm-tis,tpmdev=tpm0 \
-            -boot order=d,menu=on \
+            -boot order=c,once=d,menu=on \
             -cpu "$QEMU_CPU" \
             -smp "$QEMU_SMP" \
             -vga "$QEMU_VGA" \
@@ -222,11 +232,11 @@ while true; do
             -drive if=pflash,format=raw,file="$REPO_ROOT/$TPM_DIR/$OVMF_VARS_WIN" \
             -device ich9-ahci,id=ahci \
             -drive id=disk,if=none,file="$VOLUMES_ROOT/$virtual_volume_name",format=raw \
-            -device ide-hd,bus=ahci.1,drive=disk,bootindex=0 \
+            -device ide-hd,bus=ahci.0,drive=disk,bootindex=0 \
             -chardev socket,id=chrtpm,path="$REPO_ROOT/$TPM_DIR/swtpm-sock" \
             -tpmdev emulator,id=tpm0,chardev=chrtpm \
             -device tpm-tis,tpmdev=tpm0 \
-            -boot menu=on \
+            -boot order=c,menu=on \
             -cpu "$QEMU_CPU" \
             -smp "$QEMU_SMP" \
             -vga "$QEMU_VGA" \
