@@ -1,5 +1,8 @@
 # QEMU VM Launcher
 
+## DISCLAIMER: THIS SCRIPT WAS FULL REFACTORED WITH AI
+
+
 Bash helper to install QEMU + OVMF + swtpm and run **Windows** VMs with UEFI and a software TPM.
 
 ## Run
